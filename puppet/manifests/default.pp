@@ -3,49 +3,58 @@ $mysql_root_password = ''
 exec { 'apt-get update' :
     command => 'apt-get update',
     path    => '/usr/bin/',
+    timeout => 60,
+    tries   => 3
 }
 
 class { 'apt' :
     always_apt_update => true
 }
 
-package { ['build-essential', 'python-software-properties'] :
-    ensure  => installed,
+package { ['gcc', 'make', 'python-software-properties',
+           'vim', 'curl', 'git', 'subversion'] :
+    ensure  => 'installed',
     require => Exec['apt-get update'],
+}
+
+file { '/home/vagrant/.bash_aliases' :
+    source => 'puppet:///modules/puphpet/dot/.bash_aliases',
+    ensure => 'present',
 }
 
 apt::ppa { 'ppa:ondrej/php5' : }
 
-apt::builddep { 'php5' : }
+class { 'git' :
+    svn => true,
+    gui => false,
+}
 
 class { 'apache' :
     require => Apt::Ppa['ppa:ondrej/php5'],
 }
 
-apache::module { 'rewrite' : }
+apache::dotconf { 'custom' :
+    content => 'EnableSendfile Off',
+}
 
-#change this!
-#apache::vhost { 'clients.splashmedia.dev':
-#    server_name   => 'clients.splashmedia.dev',
-    # serveraliases => ['clients.splashmedia.dev'],
-#    docroot       => '/home/vagrant/shared',
-#    port          => '80',
-#    priority      => '1',
-#}
+apache::module { 'rewrite' : }
 
 apache::vhost { 'mww' :
     server_name   => 'mww.dev',
     serveraliases => ['www.mww.dev',],
-    docroot       => '/var/www/mww.com/web',
+    docroot       => '/home/vagrant/shared/mww',
     port          => '80',
     priority      => '1'
 }
 
-#change this!
-#exec {'/usr/sbin/a2dissite default': 
-#    require => Apache::Vhost['clients.splashmedia.dev'],
-#    notify  => Service['apache'],
-#}
+apache::vhost { 'puphpet' :
+    server_name   => 'puphpet.dev',
+    serveraliases => ['www.puphpet.dev',],
+    docroot       => '/var/www/puphpet/web',
+    port          => '80',
+    env_variables => { 'APP_ENV' => 'dev' },
+    priority      => '1'
+}
 
 class { 'php' :
     service => 'apache',
@@ -67,7 +76,7 @@ class { 'php::devel' :
 }
 
 php::pecl::module { 'pecl_http' :
-    use_package => false,
+    use_package => false
 }
 
 php::ini { 'default' :
@@ -79,28 +88,10 @@ php::ini { 'default' :
     target   => 'error_reporting.ini'
 }
 
-class { 'xdebug' :
-    require => Package['php'],
-    notify  => Service['apache'],
-}
+class { 'xdebug' : }
 
-xdebug::config { 'default' :
-    default_enable        => '1',
-    remote_autostart      => '1',
-    remote_connect_back   => '1',
-    remote_enable         => '1',
-    remote_handler        => 'dbgp',
-    remote_port           => '9000',
-    show_local_vars       => '0',
-    var_display_max_data  => '10000',
-    var_display_max_depth => '20',
-    show_exception_trace  => '0'
-}
-
-# php::custom::xhprof { 'xhprof' :
-#     output_dir => '/var/www/xhprof',
-#     require    => Class['php'],
-# }
+xdebug::config { 'cgi' : }
+xdebug::config { 'cli' : }
 
 class { 'mysql' :
     root_password => $mysql_root_password,
