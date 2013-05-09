@@ -1,4 +1,4 @@
-woodworking
+McCaffrey Woodworking
 ===========
 
 McCaffrey Woodworking
