@@ -94,5 +94,16 @@ xdebug::config { 'cgi' : }
 xdebug::config { 'cli' : }
 
 class { 'mysql' :
-    root_password => $mysql_root_password,
+#    root_password => $mysql_root_password,
 }
+
+	database_user { "mwwadmin@localhost":
+        password_hash => mysql_password("mwwadmin")
+  }
+  database { "McCaffreyWoodworking":
+        ensure => "present",
+        charset => "utf8"
+  }
+  database_grant { "mwwadmin@localhost/McCaffreyWoodworking":
+        privileges => ['all'],
+  }
