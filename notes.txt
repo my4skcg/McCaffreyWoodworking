@@ -1,0 +1,3 @@
+
+Access mysql on vbox:
+	mysql --user=mwwadmin --password=mwwadmin McCaffreyWoodworking

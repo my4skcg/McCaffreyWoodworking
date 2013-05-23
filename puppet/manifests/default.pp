@@ -1,5 +1,3 @@
-$mysql_root_password = ''
-
 exec { 'apt-get update' :
     command => 'apt-get update',
     path    => '/usr/bin/',
@@ -12,7 +10,7 @@ class { 'apt' :
 }
 
 package { ['gcc', 'make', 'python-software-properties',
-           'vim', 'curl', 'git', 'subversion'] :
+           'vim', 'curl'] :
     ensure  => 'installed',
     require => Exec['apt-get update'],
 }
@@ -20,13 +18,6 @@ package { ['gcc', 'make', 'python-software-properties',
 file { '/home/vagrant/.bash_aliases' :
     source => 'puppet:///modules/puphpet/dot/.bash_aliases',
     ensure => 'present',
-}
-
-apt::ppa { 'ppa:ondrej/php5' : }
-
-class { 'git' :
-    svn => true,
-    gui => false,
 }
 
 class { 'apache' :
@@ -38,6 +29,11 @@ apache::dotconf { 'custom' :
 }
 
 apache::module { 'rewrite' : }
+
+class { 'git' :
+    svn => true,
+    gui => false,
+}
 
 apache::vhost { 'mww' :
     server_name   => 'mww.dev',
@@ -54,6 +50,10 @@ apache::vhost { 'puphpet' :
     port          => '80',
     env_variables => { 'APP_ENV' => 'dev' },
     priority      => '1'
+}
+
+apt::ppa { 'ppa:ondrej/php5' :
+    before => Class['php']
 }
 
 class { 'php' :
@@ -93,17 +93,18 @@ class { 'xdebug' : }
 xdebug::config { 'cgi' : }
 xdebug::config { 'cli' : }
 
-class { 'mysql' :
-#    root_password => $mysql_root_password,
+#class { 'php::composer': }
+
+class { 'mysql':
+  root_password => 'root',
 }
 
-	database_user { "mwwadmin@localhost":
-        password_hash => mysql_password("mwwadmin")
-  }
-  database { "McCaffreyWoodworking":
-        ensure => "present",
-        charset => "utf8"
-  }
-  database_grant { "mwwadmin@localhost/McCaffreyWoodworking":
-        privileges => ['all'],
-  }
+mysql::grant { 'McCaffreyWoodworking':
+  mysql_privileges     => 'ALL',
+  mysql_db             => 'McCaffreyWoodworking',
+  mysql_user           => 'mwwadmin',
+  mysql_password       => 'mwwadmin',
+  mysql_host           => 'localhost',
+#  mysql_grant_filepath => '/home/vagrant/puppet-mysql',
+}
+
