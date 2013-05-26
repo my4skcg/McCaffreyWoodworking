@@ -9,7 +9,7 @@ class { 'apt' :
     always_apt_update => true
 }
 
-package { ['gcc', 'make', 'python-software-properties',
+package { ['build-essential', 'python-software-properties',
            'vim', 'curl'] :
     ensure  => 'installed',
     require => Exec['apt-get update'],
@@ -18,6 +18,15 @@ package { ['gcc', 'make', 'python-software-properties',
 file { '/home/vagrant/.bash_aliases' :
     source => 'puppet:///modules/puphpet/dot/.bash_aliases',
     ensure => 'present',
+}
+
+apt::ppa { 'ppa:ondrej/php5' :
+    before  => Class['php']
+}
+
+git::repo { 'puphpet' :
+    path   => '/home/vagrant/shared/puphpet.dev/',
+    source => 'https://github.com/jtreminio/Puphpet.git'
 }
 
 class { 'apache' :
@@ -30,30 +39,19 @@ apache::dotconf { 'custom' :
 
 apache::module { 'rewrite' : }
 
-class { 'git' :
-    svn => true,
-    gui => false,
-}
-
-apache::vhost { 'mww' :
-    server_name   => 'mww.dev',
-    serveraliases => ['www.mww.dev',],
-    docroot       => '/home/vagrant/shared/mww',
-    port          => '80',
-    priority      => '1'
-}
-
 apache::vhost { 'puphpet' :
     server_name   => 'puphpet.dev',
     serveraliases => ['www.puphpet.dev',],
-    docroot       => '/var/www/puphpet/web',
+    docroot       => '/home/vagrant/shared/puphpet/web',
     port          => '80',
     env_variables => { 'APP_ENV' => 'dev' },
-    priority      => '1'
+    priority      => '1',
+    require       => Git::Repo['puphpet']
 }
 
-apt::ppa { 'ppa:ondrej/php5' :
-    before => Class['php']
+class { 'git' :
+    svn => true,
+    gui => false,
 }
 
 class { 'php' :
@@ -93,7 +91,20 @@ class { 'xdebug' : }
 xdebug::config { 'cgi' : }
 xdebug::config { 'cli' : }
 
-#class { 'php::composer': }
+class { 'php::composer': }
+
+php::composer::run { 'puphpet':
+    path    => '/home/vagrant/shared/puphpet.dev/',
+    require => Git::Repo['puphpet']
+}
+
+apache::vhost { 'mww' :
+    server_name   => 'mww.dev',
+    serveraliases => ['www.mww.dev',],
+    docroot       => '/home/vagrant/shared/mww',
+    port          => '80',
+    priority      => '1'
+}
 
 class { 'mysql':
   root_password => 'root',

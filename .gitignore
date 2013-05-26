@@ -2,26 +2,17 @@
 \.vagrant
 \.idea
 composer.phar
-phorever.pid
 php_errors.log
 *.pyc
-phorever.sh
 *.csv
 *.swp
 
-/bin/phorever
 /bin/bs
 /bin/phpunit
 /bin/phpmd
 /bin/pdepend
 /bin/phploc
 /bin/phinx
-
-/config/parameters.yml
-
-/node_modules
-
-/tests/parameters.yml
 
 /tmp/*
 
