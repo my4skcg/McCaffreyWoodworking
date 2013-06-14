@@ -1,3 +1,5 @@
 
 Access mysql on vbox:
 	mysql --user=mwwadmin --password=mwwadmin McCaffreyWoodworking
+
+Apache logs : /var/log/apache2

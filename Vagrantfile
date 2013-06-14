@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
 	config.vm.hostname = "mww.dev"
 
-    config.vm.synced_folder "#{ENV['HOME']}/WebDev/McCaffreyWoodworking", "/home/vagrant/shared", id: "vagrant-root", :nfs => true
+    config.vm.synced_folder "#{ENV['HOME']}/WebDev/McCaffreyWoodworking", "/var/www/mww", id: "vagrant-root", :nfs => true
 
     config.vm.provision :puppet do |puppet|
         puppet.manifests_path = "puppet/manifests"

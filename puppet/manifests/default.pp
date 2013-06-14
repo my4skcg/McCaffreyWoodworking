@@ -101,7 +101,9 @@ class { 'php::composer': }
 apache::vhost { 'mww' :
     server_name   => 'mww.dev',
     serveraliases => ['www.mww.dev',],
-    docroot       => '/home/vagrant/shared',
+    docroot       => '/var/www/mww',
+    docroot_owner => 'root',
+    docroot_group => 'root',
     port          => '80',
     priority      => '1'
 }
