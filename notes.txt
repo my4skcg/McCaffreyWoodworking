@@ -3,3 +3,14 @@ Access mysql on vbox:
 	mysql --user=mwwadmin --password=mwwadmin McCaffreyWoodworking
 
 Apache logs : /var/log/apache2
+
+When vhost setup doesn't seem to be working
+    vhost docroot set to /var/www/mww, but when type "mww.dev" into url, /var/www/index is rendered
+    - sudo su
+    - cd /etc/apache2/sites-enabled
+    - if 000-default, then rm 000-default
+    - retry
+    ==> add the following to your default.pp, right after your apache::vhost {} directive
+        exec {'/usr/sbin/a2dissite default':
+            notify  => Service['apache'],
+        }

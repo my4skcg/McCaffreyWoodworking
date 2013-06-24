@@ -108,6 +108,10 @@ apache::vhost { 'mww' :
     priority      => '1'
 }
 
+exec {'/usr/sbin/a2dissite default':
+  notify  => Service['apache'],
+}
+
 class { 'mysql':
   root_password => 'root',
 }
