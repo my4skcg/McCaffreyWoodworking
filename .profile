@@ -1,4 +1,5 @@
- alias vup="cd $MWWPATH; vagrant up"
- alias vhalt="cd $MWWPATH; vagrant halt"
- alias vsus="cd $MWWPATH; vagrant suspend"
- alias vssh="cd $MWWPATH; vagrant ssh"
+ cd $MWWPATH
+ alias vup="vagrant up"
+ alias vhalt="vagrant halt"
+ alias vsus="vagrant suspend"
+ alias vssh="vagrant ssh"

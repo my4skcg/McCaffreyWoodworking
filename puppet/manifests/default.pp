@@ -24,11 +24,6 @@ apt::ppa { 'ppa:ondrej/php5' :
     before  => Class['php']
 }
 
-#git::repo { 'puphpet' :
-#    path   => '/home/vagrant/shared/puphpet.dev/',
-#    source => 'https://github.com/jtreminio/Puphpet.git'
-#}
-
 class { 'apache' :
     require => Apt::Ppa['ppa:ondrej/php5'],
 }
@@ -39,14 +34,27 @@ apache::dotconf { 'custom' :
 
 apache::module { 'rewrite' : }
 
-#apache::vhost { 'puphpet' :
-#    server_name   => 'puphpet.dev',
-#    serveraliases => ['www.puphpet.dev',],
-#    docroot       => '/home/vagrant/shared/puphpet/web',
-#    port          => '80',
-#    env_variables => { 'APP_ENV' => 'dev' },
-#    priority      => '1',
-#    require       => Git::Repo['puphpet']
+apache::vhost { 'default':
+  docroot             => '/var/www',
+  server_name         => 'www.default.com',
+  priority            => '',
+}
+
+apache::vhost { 'mww' :
+	server_name   => 'mww.dev',
+	serveraliases => ['www.mww.dev',],
+	docroot       => '/var/www/mww/web',
+	docroot_owner => 'root',
+	docroot_group => 'root',
+	directory     => '/var/www/mww/web',
+	directory_allow_override   => 'All',
+	port          => '80',
+  env_variables => { 'APP_ENV' => 'dev' },
+	priority      => '1'
+}
+
+#exec {'/usr/sbin/a2dissite default':
+#  notify  => Service['apache'],
 #}
 
 class { 'git' :
@@ -73,6 +81,10 @@ class { 'php::devel' :
     require => Class['php'],
 }
 
+class { 'php::composer':
+  require => Package['php5', 'curl'],
+}
+
 php::pecl::module { 'pecl_http' :
     use_package => false
 }
@@ -90,27 +102,6 @@ class { 'xdebug' : }
 
 xdebug::config { 'cgi' : }
 xdebug::config { 'cli' : }
-
-class { 'php::composer': }
-
-#php::composer::run { 'puphpet':
-#    path    => '/home/vagrant/shared/puphpet.dev/',
-#    require => Git::Repo['puphpet']
-#}
-
-apache::vhost { 'mww' :
-    server_name   => 'mww.dev',
-    serveraliases => ['www.mww.dev',],
-    docroot       => '/var/www/mww',
-    docroot_owner => 'root',
-    docroot_group => 'root',
-    port          => '80',
-    priority      => '1'
-}
-
-exec {'/usr/sbin/a2dissite default':
-  notify  => Service['apache'],
-}
 
 class { 'mysql':
   root_password => 'root',

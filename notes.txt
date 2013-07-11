@@ -14,3 +14,8 @@ When vhost setup doesn't seem to be working
         exec {'/usr/sbin/a2dissite default':
             notify  => Service['apache'],
         }
+    ==> OR add apache::vhost { 'default' ...
+
+Composer - on vbox :
+    composer list - lists commands
+    composer update - Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file
