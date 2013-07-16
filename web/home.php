@@ -7,7 +7,7 @@
 <div id="myCarousel" class="carousel slide">
   <div class="carousel-inner">
     <div class="item active">
-      <div class="whatever" style="background-image:url(../assets/img/singlePen.jpg);">
+      <div class="whatever" style="background-image:url(img/singlePen.jpg);">
         <!-- <img src="assets/img/singlePen.jpg" alt=""> -->
         <div class="container">
           <div class="carousel-caption">
@@ -18,7 +18,7 @@
         </div></div>
     </div>
     <div class="item">
-      <img src="../assets/img/examples/slide-02.jpg" alt="">
+      <img src="img/examples/slide-02.jpg" alt="">
       <div class="container">
         <div class="carousel-caption">
           <h1>Woods</h1>
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="item">
-      <img src="../assets/img/examples/slide-03.jpg" alt="">
+      <img src="img/examples/slide-03.jpg" alt="">
       <div class="container">
         <div class="carousel-caption">
           <h1>Pen Hardware</h1>
@@ -119,19 +119,19 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <?php //include 'scriptTags.php'; ?>
-<script src="../assets/js/jquery.js"></script>
-<script src="../assets/js/bootstrap-transition.js"></script>
-<script src="../assets/js/bootstrap-alert.js"></script>
-<script src="../assets/js/bootstrap-modal.js"></script>
-<script src="../assets/js/bootstrap-dropdown.js"></script>
-<script src="../assets/js/bootstrap-scrollspy.js"></script>
-<script src="../assets/js/bootstrap-tab.js"></script>
-<script src="../assets/js/bootstrap-tooltip.js"></script>
-<script src="../assets/js/bootstrap-popover.js"></script>
-<script src="../assets/js/bootstrap-button.js"></script>
-<script src="../assets/js/bootstrap-collapse.js"></script>
-<script src="../assets/js/bootstrap-carousel.js"></script>
-<script src="../assets/js/bootstrap-typeahead.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap-transition.js"></script>
+<script src="js/bootstrap-alert.js"></script>
+<script src="js/bootstrap-modal.js"></script>
+<script src="js/bootstrap-dropdown.js"></script>
+<script src="js/bootstrap-scrollspy.js"></script>
+<script src="js/bootstrap-tab.js"></script>
+<script src="js/bootstrap-tooltip.js"></script>
+<script src="js/bootstrap-popover.js"></script>
+<script src="js/bootstrap-button.js"></script>
+<script src="js/bootstrap-collapse.js"></script>
+<script src="js/bootstrap-carousel.js"></script>
+<script src="js/bootstrap-typeahead.js"></script>
 <script>
     !function ($) {
         $(function(){
@@ -140,6 +140,6 @@
         })
     }(window.jQuery)
 </script>
-<script src="../assets/js/holder/holder.js"></script>
+<script src="js/holder/holder.js"></script>
 </body>
 </html>
