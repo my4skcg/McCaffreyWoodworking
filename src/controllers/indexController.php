@@ -13,7 +13,6 @@ class indexController implements ControllerProviderInterface {
 
 	public function connect(Application $app) {
 
-var_dump('In indexController connect');
 		//@note $app['controllers_factory'] is a factory that returns a new instance of ControllerCollection when used.
 		//@see http://silex.sensiolabs.org/doc/organizing_controllers.html
 		$controllers = $app['controllers_factory'];
@@ -26,10 +25,12 @@ var_dump('In indexController connect');
 	}
 
 	public function home(Application $app) {
-	var_dump('In indexController home');
 		//$output = '<p> McCaffrey Woodworking Home page!</p>';
-		$output = file_get_contents(SITEPATH."web/home.php");
-		return $output;
+		//$output = file_get_contents(SITEPATH."src/views/home.html");
+		//return $output;
+		//return $app['twig']->render('home.html');
+		include SITEPATH . 'src/views/helloworld.html';
+		return;
 	}
 
 }
