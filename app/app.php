@@ -23,8 +23,9 @@ require SITEPATH . '/app/bootstrap.php';
 
 // Define routes for our static pages
 $pages = array(
-	'/' => 'home',
-	'/about' => 'about'
+	'/'        => 'home',
+	'/about' 	 => 'about',
+	'/contact' => 'contact'
 );
 foreach ($pages as $route => $view) {
 	$app->get($route, function () use ($app, $view) {

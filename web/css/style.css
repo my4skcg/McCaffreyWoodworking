@@ -161,6 +161,9 @@ body {
 /* Main Content
 -------------------------------------------------- */
 .main-content {
+    position: relative;
+    z-index: 5;
+    margin-top: 90px;
 }
 
 /* RESPONSIVE CSS
