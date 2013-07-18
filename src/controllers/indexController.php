@@ -25,11 +25,16 @@ class indexController implements ControllerProviderInterface {
 	}
 
 	public function home(Application $app) {
+		/**
+		 *
 		//$output = '<p> McCaffrey Woodworking Home page!</p>';
 		//$output = file_get_contents(SITEPATH."web/home.php");
 		//return $output;
-		return $app->redirect($app['request']->getBaseUrl() . '/home.php');
-		//return $app['twig']->render(SITEPATH.'web/home.php');
+		 */
+
+		//return $app->redirect($app['request']->getBaseUrl() . '/home.php');
+		//return $app['twig']->render('silex-skeleton/home.twig.html');
+		return $app['twig']->render('home.twig');
 	}
 
 }

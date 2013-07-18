@@ -16,6 +16,7 @@
         , "monolog/monolog": "1.2.*"
         , "silex/silex": "1.0.*@dev"
         , "twig/twig": "1.*"
+        , "symfony/twig-bridge": "2.*"
         , "doctrine/dbal": "2.*"
         , "aura/sql": "dev-master"
     }
